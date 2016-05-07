@@ -44,9 +44,6 @@
 
 #define CIT_INSPECTED_DELAY_TIME 120  //How often I'm allowed to be inspected
 
-extern ConVar sk_healthkit;
-extern ConVar sk_healthvial;
-
 const int MAX_PLAYER_SQUAD = 4;
 
 ConVar	sk_citizen_health				( "sk_citizen_health",					"0");
@@ -1923,26 +1920,7 @@ void CNPC_Citizen::HandleAnimEvent( animevent_t *pEvent )
 void CNPC_Citizen::PickupItem( CBaseEntity *pItem )
 {
 	Assert( pItem != NULL );
-	if( FClassnameIs( pItem, "item_healthkit" ) )
-	{
-		if ( TakeHealth( sk_healthkit.GetFloat(), DMG_GENERIC ) )
-		{
-			RemoveAllDecals();
-			UTIL_Remove( pItem );
-		}
-	}
-	else if( FClassnameIs( pItem, "item_healthvial" ) )
-	{
-		if ( TakeHealth( sk_healthvial.GetFloat(), DMG_GENERIC ) )
-		{
-			RemoveAllDecals();
-			UTIL_Remove( pItem );
-		}
-	}
-	else
-	{
-		DevMsg("Citizen doesn't know how to pick up %s!\n", pItem->GetClassname() );
-	}
+	
 }
 
 //-----------------------------------------------------------------------------

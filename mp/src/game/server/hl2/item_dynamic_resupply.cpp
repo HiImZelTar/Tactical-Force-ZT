@@ -15,7 +15,6 @@
 
 ConVar sk_dynamic_resupply_modifier( "sk_dynamic_resupply_modifier","1.0" );
 extern ConVar sk_battery;
-extern ConVar sk_healthkit;
 
 ConVar g_debug_dynamicresupplies( "g_debug_dynamicresupplies", "0", FCVAR_NONE, "Debug item_dynamic_resupply spawning. Set to 1 to see text printouts of the spawning. Set to 2 to see lines drawn to other items factored into the spawning." );
 
@@ -434,15 +433,8 @@ void CItem_DynamicResupply::ComputeHealthRatios( CItem_DynamicResupply* pMaster,
 	{
 		// Figure out the current level of this resupply type
 		float flMax;
-		if ( i == DS_HEALTH_INDEX )
-		{
-			// Health
-			flMax = pPlayer->GetMaxHealth();
-
-			float flCurrentHealth = pPlayer->GetHealth() + (pSpawnInfo[i].m_iPotentialItems * sk_healthkit.GetFloat());
-			pSpawnInfo[i].m_flCurrentRatio = (flCurrentHealth / flMax);
-		}
-		else if ( i == DS_ARMOR_INDEX )
+		
+		if ( i == DS_ARMOR_INDEX )
 		{
 			// Armor 
 			// Ignore armor if we don't have the suit

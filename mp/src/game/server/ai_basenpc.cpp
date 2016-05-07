@@ -98,7 +98,6 @@
 #include "env_debughistory.h"
 #include "collisionutils.h"
 
-extern ConVar sk_healthkit;
 
 // dvs: for opening doors -- these should probably not be here
 #include "ai_route.h"

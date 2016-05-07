@@ -1342,7 +1342,6 @@ exit 1
     <ClCompile Include="hl2\info_teleporter_countdown.cpp" />
     <ClCompile Include="hl2\item_ammo.cpp" />
     <ClCompile Include="hl2\item_dynamic_resupply.cpp" />
-    <ClCompile Include="hl2\item_healthkit.cpp" />
     <ClCompile Include="hl2\item_itemcrate.cpp" />
     <ClCompile Include="hl2\item_suit.cpp" />
     <ClCompile Include="hl2\look_door.cpp" />
