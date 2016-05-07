@@ -1,0 +1,15 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="12.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <LocalDebuggerCommand>D:\Games Online\Steam\steamapps\common\Source SDK Base 2013 Multiplayer\hl2.exe</LocalDebuggerCommand>
+    <LocalDebuggerWorkingDirectory>..\..\..\game\mod_hl2mp</LocalDebuggerWorkingDirectory>
+    <DebuggerFlavor>WindowsLocalDebugger</DebuggerFlavor>
+    <LocalDebuggerCommandArguments>-allowdebug -novid -game "D:\Tactical Force mod\Tactical Force - Origin\trunk\mp\game\mod_hl2mp"</LocalDebuggerCommandArguments>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <LocalDebuggerCommand>D:\Games Online\Steam\steamapps\common\Source SDK Base 2013 Multiplayer\hl2.exe</LocalDebuggerCommand>
+    <LocalDebuggerWorkingDirectory>..\..\..\game\mod_hl2mp</LocalDebuggerWorkingDirectory>
+    <DebuggerFlavor>WindowsLocalDebugger</DebuggerFlavor>
+    <LocalDebuggerCommandArguments>-allowdebug -novid -game "D:\Tactical Force mod\Tactical Force - Origin\trunk\mp\game\mod_hl2mp"</LocalDebuggerCommandArguments>
+  </PropertyGroup>
+</Project>
