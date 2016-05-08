@@ -29,8 +29,7 @@ class CWorldItem : public CBaseAnimating
 public:
 	DECLARE_CLASS( CWorldItem, CBaseAnimating );
 
-	bool	KeyValue( const char *szKeyName, const char *szValue ); 
-	void	Spawn( void );
+	bool	KeyValue( const char *szKeyName, const char *szValue );
 
 	int		m_iType;
 };
@@ -54,35 +53,6 @@ bool CWorldItem::KeyValue( const char *szKeyName, const char *szValue )
 		return BaseClass::KeyValue( szKeyName, szValue );
 
 	return true;
-}
-
-void CWorldItem::Spawn( void )
-{
-	CBaseEntity *pEntity = NULL;
-
-	switch (m_iType) 
-	{
-	case 44: // ITEM_BATTERY:
-		pEntity = CBaseEntity::Create( "item_battery", GetLocalOrigin(), GetLocalAngles() );
-		break;
-	case 45: // ITEM_SUIT:
-		pEntity = CBaseEntity::Create( "item_suit", GetLocalOrigin(), GetLocalAngles() );
-		break;
-	}
-
-	if (!pEntity)
-	{
-		Warning("unable to create world_item %d\n", m_iType );
-	}
-	else
-	{
-		pEntity->m_target = m_target;
-		pEntity->SetName( GetEntityName() );
-		pEntity->ClearSpawnFlags();
-		pEntity->AddSpawnFlags( m_spawnflags );
-	}
-
-	UTIL_RemoveImmediate( this );
 }
 
 
