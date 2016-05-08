@@ -35,8 +35,6 @@ extern CBaseEntity				*g_pLastSpawn;
 
 #define HL2MP_COMMAND_MAX_RATE 0.3
 
-void DropPrimedFragGrenade( CHL2MP_Player *pPlayer, CBaseCombatWeapon *pGrenade );
-
 LINK_ENTITY_TO_CLASS( player, CHL2MP_Player );
 
 LINK_ENTITY_TO_CLASS( info_player_combine, CPointEntity );
@@ -1183,21 +1181,6 @@ void CHL2MP_Player::FlashlightTurnOff( void )
 
 void CHL2MP_Player::Weapon_Drop( CBaseCombatWeapon *pWeapon, const Vector *pvecTarget, const Vector *pVelocity )
 {
-	//Drop a grenade if it's primed.
-	if ( GetActiveWeapon() )
-	{
-		CBaseCombatWeapon *pGrenade = Weapon_OwnsThisType("weapon_frag");
-
-		if ( GetActiveWeapon() == pGrenade )
-		{
-			if ( ( m_nButtons & IN_ATTACK ) || (m_nButtons & IN_ATTACK2) )
-			{
-				DropPrimedFragGrenade( this, pGrenade );
-				return;
-			}
-		}
-	}
-
 	BaseClass::Weapon_Drop( pWeapon, pvecTarget, pVelocity );
 }
 
