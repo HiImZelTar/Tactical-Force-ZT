@@ -30,7 +30,6 @@
 #include "effect_color_tables.h"
 #include "vphysics/player_controller.h"
 #include "player_pickup.h"
-#include "weapon_physcannon.h"
 #include "script_intro.h"
 #include "effect_dispatch_data.h"
 #include "te_effect_dispatch.h" 
@@ -1385,93 +1384,6 @@ CHL2_Player::~CHL2_Player( void )
 
 //-----------------------------------------------------------------------------
 //-----------------------------------------------------------------------------
-
-bool CHL2_Player::CommanderFindGoal( commandgoal_t *pGoal )
-{
-	CAI_BaseNPC *pAllyNpc;
-	trace_t	tr;
-	Vector	vecTarget;
-	Vector	forward;
-
-	EyeVectors( &forward );
-	
-	//---------------------------------
-	// MASK_SHOT on purpose! So that you don't hit the invisible hulls of the NPCs.
-	CTraceFilterSkipTwoEntities filter( this, PhysCannonGetHeldEntity( GetActiveWeapon() ), COLLISION_GROUP_INTERACTIVE_DEBRIS );
-
-	UTIL_TraceLine( EyePosition(), EyePosition() + forward * MAX_COORD_RANGE, MASK_SHOT, &filter, &tr );
-
-	if( !tr.DidHitWorld() )
-	{
-		CUtlVector<CAI_BaseNPC *> Allies;
-		AISquadIter_t iter;
-		for ( pAllyNpc = m_pPlayerAISquad->GetFirstMember(&iter); pAllyNpc; pAllyNpc = m_pPlayerAISquad->GetNextMember(&iter) )
-		{
-			if ( pAllyNpc->IsCommandable() )
-				Allies.AddToTail( pAllyNpc );
-		}
-
-		for( int i = 0 ; i < Allies.Count() ; i++ )
-		{
-			if( Allies[ i ]->IsValidCommandTarget( tr.m_pEnt ) )
-			{
-				pGoal->m_pGoalEntity = tr.m_pEnt;
-				return true;
-			}
-		}
-	}
-
-	if( tr.fraction == 1.0 || (tr.surface.flags & SURF_SKY) )
-	{
-		// Move commands invalid against skybox.
-		pGoal->m_vecGoalLocation = tr.endpos;
-		return false;
-	}
-
-	if ( tr.m_pEnt->IsNPC() && ((CAI_BaseNPC *)(tr.m_pEnt))->IsCommandable() )
-	{
-		pGoal->m_vecGoalLocation = tr.m_pEnt->GetAbsOrigin();
-	}
-	else
-	{
-		vecTarget = tr.endpos;
-
-		Vector mins( -16, -16, 0 );
-		Vector maxs( 16, 16, 0 );
-
-		// Back up from whatever we hit so that there's enough space at the 
-		// target location for a bounding box.
-		// Now trace down. 
-		//UTIL_TraceLine( vecTarget, vecTarget - Vector( 0, 0, 8192 ), MASK_SOLID, this, COLLISION_GROUP_NONE, &tr );
-		UTIL_TraceHull( vecTarget + tr.plane.normal * 24,
-						vecTarget - Vector( 0, 0, 8192 ),
-						mins,
-						maxs,
-						MASK_SOLID_BRUSHONLY,
-						this,
-						COLLISION_GROUP_NONE,
-						&tr );
-
-
-		if ( !tr.startsolid )
-			pGoal->m_vecGoalLocation = tr.endpos;
-		else
-			pGoal->m_vecGoalLocation = vecTarget;
-	}
-
-	pAllyNpc = GetSquadCommandRepresentative();
-	if ( !pAllyNpc )
-		return false;
-
-	vecTarget = pGoal->m_vecGoalLocation;
-	if ( !pAllyNpc->FindNearestValidGoalPos( vecTarget, &pGoal->m_vecGoalLocation ) )
-		return false;
-
-	return ( ( vecTarget - pGoal->m_vecGoalLocation ).LengthSqr() < Square( 15*12 ) );
-}
-
-//-----------------------------------------------------------------------------
-//-----------------------------------------------------------------------------
 CAI_BaseNPC *CHL2_Player::GetSquadCommandRepresentative()
 {
 	if ( m_pPlayerAISquad != NULL )
@@ -1633,12 +1545,6 @@ void CHL2_Player::CommanderExecute( CommanderCommand_t command )
 		goal.m_pGoalEntity = NULL;
 		goal.m_vecGoalLocation = vec3_invalid;
 
-		// Find a goal for ourselves.
-		if( !CommanderFindGoal( &goal ) )
-		{
-			EmitSound( "HL2Player.UseDeny" );
-			return; // just keep following
-		}
 	}
 
 #ifdef _DEBUG
@@ -3103,12 +3009,6 @@ bool CHL2_Player::Weapon_CanSwitchTo( CBaseCombatWeapon *pWeapon )
 
 	if ( GetActiveWeapon() )
 	{
-		if ( PhysCannonGetHeldEntity( GetActiveWeapon() ) == pWeapon && 
-			Weapon_OwnsThisType( pWeapon->GetClassname(), pWeapon->GetSubType()) )
-		{
-			return true;
-		}
-
 		if ( !GetActiveWeapon()->CanHolster() )
 			return false;
 	}
@@ -3118,6 +3018,7 @@ bool CHL2_Player::Weapon_CanSwitchTo( CBaseCombatWeapon *pWeapon )
 
 void CHL2_Player::PickupObject( CBaseEntity *pObject, bool bLimitMassAndSize )
 {
+	// TODO: Remove this function.
 	// can't pick up what you're standing on
 	if ( GetGroundEntity() == pObject )
 		return;
@@ -3132,7 +3033,6 @@ void CHL2_Player::PickupObject( CBaseEntity *pObject, bool bLimitMassAndSize )
 	if ( pObject->HasNPCsOnIt() )
 		return;
 
-	PlayerPickupObject( this, pObject );
 }
 
 //-----------------------------------------------------------------------------
@@ -3141,17 +3041,14 @@ void CHL2_Player::PickupObject( CBaseEntity *pObject, bool bLimitMassAndSize )
 //-----------------------------------------------------------------------------
 bool CHL2_Player::IsHoldingEntity( CBaseEntity *pEnt )
 {
-	return PlayerPickupControllerIsHoldingEntity( m_hUseEntity, pEnt );
+	// TODO: Remove this function.
+	return false;
 }
 
 float CHL2_Player::GetHeldObjectMass( IPhysicsObject *pHeldObject )
 {
-	float mass = PlayerPickupGetHeldObjectMass( m_hUseEntity, pHeldObject );
-	if ( mass == 0.0f )
-	{
-		mass = PhysCannonGetHeldObjectMass( GetActiveWeapon(), pHeldObject );
-	}
-	return mass;
+	// TODO: Remove this function.
+	return 0.0f;
 }
 
 //-----------------------------------------------------------------------------
@@ -3179,9 +3076,6 @@ void CHL2_Player::ForceDropOfCarriedPhysObjects( CBaseEntity *pOnlyIfHoldingThis
 
 	// Drop any objects being handheld.
 	ClearUseEntity();
-
-	// Then force the physcannon to drop anything it's holding, if it's our active weapon
-	PhysCannonForceDrop( GetActiveWeapon(), NULL );
 }
 
 void CHL2_Player::InputForceDropPhysObjects( inputdata_t &data )

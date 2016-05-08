@@ -73,7 +73,6 @@
 #ifdef HL2_DLL
 #include "npc_bullseye.h"
 #include "hl2_player.h"
-#include "weapon_physcannon.h"
 #endif
 #include "waterbullet.h"
 #include "in_buttons.h"

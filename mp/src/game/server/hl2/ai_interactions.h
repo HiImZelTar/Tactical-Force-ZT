@@ -30,7 +30,6 @@ extern int	g_interactionBarnacleVictimGrab;
 //extern int	g_interactionBullsquidThrow;
 
 //Combine
-extern int	g_interactionCombineBash;
 extern int	g_interactionCombineRequestCover;
 
 //Houndeye

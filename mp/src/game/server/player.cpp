@@ -79,7 +79,6 @@
 
 #ifdef HL2_DLL
 #include "combine_mine.h"
-#include "weapon_physcannon.h"
 #endif
 
 ConVar autoaim_max_dist( "autoaim_max_dist", "2160" ); // 2160 = 180 feet
@@ -6651,18 +6650,6 @@ bool CBasePlayer::BumpWeapon( CBaseCombatWeapon *pWeapon )
 				hint.sprintf( "#valve_hint_select_%s", pWeapon->GetClassname() );
 				UTIL_HudHintText( this, hint.Access() );
 			}
-
-			// Always switch to a newly-picked up weapon
-			if ( !PlayerHasMegaPhysCannon() )
-			{
-				// If it uses clips, load it full. (this is the first time you've picked up this type of weapon)
-				if ( pWeapon->UsesClipsForAmmo1() )
-				{
-					pWeapon->m_iClip1 = pWeapon->GetMaxClip1();
-				}
-
-				Weapon_Switch( pWeapon );
-			}
 #endif
 		}
 		return true;
@@ -7350,14 +7337,6 @@ void CBasePlayer::Weapon_Equip( CBaseCombatWeapon *pWeapon )
 	BaseClass::Weapon_Equip( pWeapon );
 
 	bool bShouldSwitch = g_pGameRules->FShouldSwitchWeapon( this, pWeapon );
-
-#ifdef HL2_DLL
-	if ( bShouldSwitch == false && PhysCannonGetHeldEntity( GetActiveWeapon() ) == pWeapon && 
-		 Weapon_OwnsThisType( pWeapon->GetClassname(), pWeapon->GetSubType()) )
-	{
-		bShouldSwitch = true;
-	}
-#endif//HL2_DLL
 
 	// should we switch to this item?
 	if ( bShouldSwitch )

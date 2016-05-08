@@ -34,10 +34,6 @@
 ConVar func_break_max_pieces( "func_break_max_pieces", "15", FCVAR_ARCHIVE | FCVAR_REPLICATED );
 ConVar func_break_reduction_factor( "func_break_reduction_factor", ".5" );
 
-#ifdef HL1_DLL
-extern void PlayerPickupObject( CBasePlayer *pPlayer, CBaseEntity *pObject );
-#endif
-
 extern Vector		g_vecAttackDir;
 
 // Just add more items to the bottom of this array and they will automagically be supported
@@ -1270,22 +1266,7 @@ bool CPushable::CreateVPhysics( void )
 // Pull the func_pushable
 void CPushable::Use( CBaseEntity *pActivator, CBaseEntity *pCaller, USE_TYPE useType, float value )
 {
-#ifdef HL1_DLL
-	if( m_spawnflags & SF_PUSH_NO_USE )
-		return;
-
-	// Allow pushables to be dragged by player
-	CBasePlayer *pPlayer = ToBasePlayer( pActivator );
-	if ( pPlayer )
-	{
-		if ( useType == USE_ON )
-		{
-			PlayerPickupObject( pPlayer, this );
-		}
-	}
-#else
 	BaseClass::Use( pActivator, pCaller, useType, value );
-#endif
 }
 
 

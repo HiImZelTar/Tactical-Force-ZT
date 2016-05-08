@@ -153,7 +153,6 @@ public:
 
 	void CommanderUpdate();
 	void CommanderExecute( CommanderCommand_t command = CC_TOGGLE );
-	bool CommanderFindGoal( commandgoal_t *pGoal );
 	void NotifyFriendsOfDamage( CBaseEntity *pAttackerEntity );
 	CAI_BaseNPC *GetSquadCommandRepresentative();
 	int GetNumSquadCommandables();

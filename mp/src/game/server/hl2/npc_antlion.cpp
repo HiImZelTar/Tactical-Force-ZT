@@ -25,7 +25,6 @@
 #include "decals.h"
 #include "hl2_shareddefs.h"
 #include "explode.h"
-#include "weapon_physcannon.h"
 #include "baseparticleentity.h"
 #include "props.h"
 #include "particle_parse.h"

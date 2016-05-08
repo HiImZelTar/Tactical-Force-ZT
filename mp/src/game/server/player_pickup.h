@@ -10,12 +10,6 @@
 #pragma once
 #endif
 
-#ifdef HL2_DLL
-// Needed for launch velocity
-extern ConVar physcannon_minforce;
-extern ConVar physcannon_maxforce;
-#endif
-
 // Reasons behind a pickup
 enum PhysGunPickup_t
 {
@@ -41,7 +35,6 @@ enum PhysGunForce_t
 	PHYSGUN_FORCE_LAUNCHED,	// Launched by cannon
 };
 
-void PlayerPickupObject( CBasePlayer *pPlayer, CBaseEntity *pObject );
 void Pickup_ForcePlayerToDropThisObject( CBaseEntity *pTarget );
 
 void Pickup_OnPhysGunDrop( CBaseEntity *pDroppedObject, CBasePlayer *pPlayer, PhysGunDrop_t reason );
